@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ContosoUniversity.Models.Course>
+
+@{
+    ViewBag.Title = "Courses";
+}
+
+<h2>Courses</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CourseID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Credits)
+        </th>
+        <th>
+            Grades (avg)
+        </th>
+        <th>
+            Department
+        </th>
+
+        <th>
+            Teachers
+        </th>    
+        <th>
+            Students
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    int counterTeachers=item.Instructors.Count();
+    int studentes=item.Enrollments.Select(i=>i.StudentID).Count();
+    ContosoUniversity.Models.Grade? grades =( ContosoUniversity.Models.Grade) item.Enrollments.Select(i => (int?)i.Grade).Average();
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CourseID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Credits)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem =>grades)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => counterTeachers)
+        </td> 
+        <td>
+            @Html.DisplayFor(modelItem => studentes)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.CourseID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.CourseID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.CourseID })
+        </td>
+    </tr>
+}
+
+</table>
